@@ -5,12 +5,12 @@ public class GameManager : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject rockPrefab;
     public Transform player;
-    public float spawnBoundary = 44f;
+    private float spawnBoundary = 225f;
     private float spawnInterval = 1f;
     private float spawnInterval2 = 22f;
-    public int maxEnemyCount = 22;
+    [SerializeField] private int maxEnemyCount = 22;
 
-    private int currentEnemyCount;
+    public int currentEnemyCount { get; set; }
     public TextMeshProUGUI scoreText;
     private int score = 0;
     private void Start()
@@ -33,24 +33,28 @@ public class GameManager : MonoBehaviour
     }
     private void SpawnEnemy()
     {
-        
+
         if (currentEnemyCount >= maxEnemyCount)
         {
             return;
         }
-        for (int i = 0; i < 11; i++)
+        else
         {
-            // Generate random position within the specified boundary
-            Vector3 spawnPosition = Random.insideUnitSphere * spawnBoundary;
-            spawnPosition.y = 0f; // Ensure enemy is at the same level as the player
+            for (int i = 0; i < 11; i++)
+            {
+                // Generate random position within the specified boundary
+                Vector3 spawnPosition = Random.insideUnitSphere * spawnBoundary;
+                spawnPosition.y = 0f; // Ensure enemy is at the same level as the player
 
-            // Offset the spawn position relative to the player
-            spawnPosition += player.position;
+                // Offset the spawn position relative to the player
+                spawnPosition += player.position;
 
-            // Instantiate the enemy at the spawn position
-            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+                // Instantiate the enemy at the spawn position
+                Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
-            currentEnemyCount++;
+                currentEnemyCount++;
+                Debug.Log(currentEnemyCount);
+            }
         }
     }
 

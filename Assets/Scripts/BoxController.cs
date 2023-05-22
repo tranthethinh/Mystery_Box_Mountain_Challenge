@@ -31,7 +31,7 @@ public class BoxController : MonoBehaviour
         {
             transform.SetParent(parentObject.transform, false);
         }
-        else if (other.CompareTag("Enemy") || other.CompareTag("S_Enemy"))
+        if (other.CompareTag("Enemy") || other.CompareTag("S_Enemy"))
         {
             transform.SetParent(MBposition.transform, false);
         }

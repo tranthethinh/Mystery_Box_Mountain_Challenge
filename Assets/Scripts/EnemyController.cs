@@ -65,7 +65,13 @@ public class EnemyController : MonoBehaviour
         if (transform.position.z < -1f||distanceToPlayer>200)
         {
             // Destroy the enemy object
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            Vector3 spawnPosition = Random.insideUnitSphere * 225;
+            spawnPosition.y = 22f; 
+
+            // Offset the spawn position relative to the player
+            spawnPosition += player.position;
+            transform.position = spawnPosition;
         }
     }
     void OnCollisionEnter(Collision collision)
