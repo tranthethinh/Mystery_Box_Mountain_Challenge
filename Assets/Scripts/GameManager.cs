@@ -5,16 +5,17 @@ public class GameManager : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject rockPrefab;
     public Transform player;
-    private float spawnBoundary = 225f;
-    private float spawnInterval = 1f;
+    [SerializeField] private float spawnBoundary = 225f;
+    private float spawnInterval = 10f;
     private float spawnInterval2 = 22f;
-    [SerializeField] private int maxEnemyCount = 22;
+    private int maxEnemyCount = 22;
 
     public int currentEnemyCount { get; set; }
     public TextMeshProUGUI scoreText;
     private int score = 0;
     private void Start()
     {
+        SpawnEnemy();
         scoreText.gameObject.SetActive(true);
         UpdateScore(0);
         currentEnemyCount = 0;
@@ -53,7 +54,7 @@ public class GameManager : MonoBehaviour
                 Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
                 currentEnemyCount++;
-                Debug.Log(currentEnemyCount);
+                //Debug.Log(currentEnemyCount);
             }
         }
     }

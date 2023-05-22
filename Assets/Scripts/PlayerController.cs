@@ -29,19 +29,7 @@ public class PlayerController : MonoBehaviour
             float targetAngle = Mathf.Atan2(inputVector.x, inputVector.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
-            float searchDistance = 18f;
-            //find nearest S_Enemy or Enemy to look at it if it inside searchDistance
-            GameObject nearestEnemy = FindNearestEnemyWithTag("Enemy", searchDistance);
-            GameObject nearestS_Enemy = FindNearestEnemyWithTag("S_Enemy", searchDistance);
-            GameObject targetEnemy = (nearestS_Enemy != null) ? nearestS_Enemy : nearestEnemy;
-
-            if (targetEnemy != null)
-            {
-                Vector3 direction = targetEnemy.transform.position - transform.position;
-                direction.Normalize();
-                transform.rotation = Quaternion.LookRotation(direction);
-            }
-
+            
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             rb.AddForce(moveDir * moveSpeed);
@@ -50,6 +38,18 @@ public class PlayerController : MonoBehaviour
             {
                 rb.velocity = rb.velocity.normalized * maxSpeed;
             }
+        }
+        //find nearest S_Enemy or Enemy to look at it if it inside searchDistance
+        float searchDistance = 18f;
+        GameObject nearestEnemy = FindNearestEnemyWithTag("Enemy", searchDistance);
+        GameObject nearestS_Enemy = FindNearestEnemyWithTag("S_Enemy", searchDistance);
+        GameObject targetEnemy = (nearestS_Enemy != null) ? nearestS_Enemy : nearestEnemy;
+
+        if (targetEnemy != null)
+        {
+            Vector3 direction = targetEnemy.transform.position - transform.position;
+            direction.Normalize();
+            transform.rotation = Quaternion.LookRotation(direction);
         }
         // Check if the player is grounded
         Vector3 rayDirection = (Vector3.down + Vector3.right).normalized;
