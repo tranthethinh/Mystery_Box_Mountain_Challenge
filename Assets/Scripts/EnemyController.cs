@@ -62,12 +62,12 @@ public class EnemyController : MonoBehaviour
         }
         // Check if the enemy is below the threshold position or away from the player
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        if (transform.position.z < -1f||distanceToPlayer>200)
+        if (transform.position.y < -1f||distanceToPlayer>200)
         {
             // Destroy the enemy object
             //Destroy(gameObject);
             Vector3 spawnPosition = Random.insideUnitSphere * 225;
-            spawnPosition.y = 2f; 
+            spawnPosition.y = 0f; 
 
             // Offset the spawn position relative to the player
             spawnPosition += player.position;
