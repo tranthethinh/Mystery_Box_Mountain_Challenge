@@ -67,7 +67,7 @@ public class EnemyController : MonoBehaviour
             // Destroy the enemy object
             //Destroy(gameObject);
             Vector3 spawnPosition = Random.insideUnitSphere * 225;
-            spawnPosition.y = 22f; 
+            spawnPosition.y = 2f; 
 
             // Offset the spawn position relative to the player
             spawnPosition += player.position;
