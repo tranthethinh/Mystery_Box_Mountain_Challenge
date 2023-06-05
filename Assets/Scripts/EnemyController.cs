@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
     private Vector3 randomDirection;
     private Vector3 currentDirection;
     private bool isGrounded = false;
-    private float jumpForce = 5f;
+    private float jumpForce = 2f;
     private Rigidbody rb;
 
     private void Start()

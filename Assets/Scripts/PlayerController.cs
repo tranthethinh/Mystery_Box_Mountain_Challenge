@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private Animator animator;
+
+
     public float moveSpeed = 48f; // speed of the player's movement
     public float maxSpeed = 48f; // maximum speed of the player
     private float jumpForce = 500f; // force of the player's jump
@@ -14,6 +17,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
+
     }
 
     void FixedUpdate()
@@ -38,7 +43,11 @@ public class PlayerController : MonoBehaviour
             {
                 rb.velocity = rb.velocity.normalized * maxSpeed;
             }
+
+            
         }
+        animator.SetBool("IsRunning", rb.velocity.magnitude >0);
+
         //find nearest S_Enemy or Enemy to look at it if it inside searchDistance
         float searchDistance = 18f;
         GameObject nearestEnemy = FindNearestEnemyWithTag("Enemy", searchDistance);
@@ -49,17 +58,21 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 direction = targetEnemy.transform.position - transform.position;
             direction.Normalize();
-            transform.rotation = Quaternion.LookRotation(direction);
+            if (Mathf.Abs(targetEnemy.transform.position.y - transform.position.y) < 2)
+            {
+                transform.rotation = Quaternion.LookRotation(direction);
+            }
         }
         // Check if the player is grounded
-        Vector3 rayDirection = (Vector3.down + Vector3.right).normalized;
+        //Vector3 rayDirection = (Vector3.down + Vector3.right).normalized;
 
-        isGrounded = Physics.Raycast(transform.position, rayDirection, out RaycastHit hit, 2f);
+        //isGrounded = Physics.Raycast(transform.position, rayDirection, out RaycastHit hit, 2f);
 
         // Jump if the player is grounded and the jump button is pressed
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce);
+            isGrounded = false;
         }
         if (transform.position.y < -1)
         {
@@ -84,5 +97,11 @@ public class PlayerController : MonoBehaviour
         }
 
         return nearestEnemy;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground")){
+            isGrounded = true;
+        }
     }
 }

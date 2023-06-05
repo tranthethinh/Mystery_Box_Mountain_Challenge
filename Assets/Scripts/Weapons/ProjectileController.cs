@@ -7,7 +7,7 @@ namespace BigRookGames.Weapons
     public class ProjectileController : MonoBehaviour
     {
         // --- Config ---
-        public float speed = 100;
+        public float speed = 200;
         public LayerMask collisionLayerMask;
 
         // --- Explosion VFX ---
@@ -27,11 +27,11 @@ namespace BigRookGames.Weapons
 
         private GameManager gameManager;
         public int pointValue;
-
+        private Rigidbody rb;
         // Start is called before the first frame update
         void Start()
         {
-
+            rb = GetComponent<Rigidbody>();
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         }
         private void Update()
@@ -40,18 +40,23 @@ namespace BigRookGames.Weapons
             if (targetHit) return;
 
             float searchDistance = 10f; // Adjust this value to define the search distance
-
+            //find nearest S_Enemy or Enemy to look at it if it inside searchDistance
             GameObject nearestEnemy = FindNearestEnemyWithTag("Enemy", searchDistance);
-            if (nearestEnemy != null)
+            GameObject nearestS_Enemy = FindNearestEnemyWithTag("S_Enemy", searchDistance);
+            GameObject targetEnemy = (nearestS_Enemy != null) ? nearestS_Enemy : nearestEnemy;
+            if (targetEnemy != null)
             {
                 // --- Calculate the direction towards the nearest enemy ---
-                Vector3 direction = nearestEnemy.transform.position - transform.position;
+                Vector3 targetPosition = targetEnemy.transform.position;
+                targetPosition.y = targetEnemy.transform.position.y + 2;
+
+                Vector3 direction = targetPosition - transform.position;
                 direction.Normalize();
 
                 // --- Move the game object towards the nearest enemy at the defined speed ---
-                transform.position += direction * (speed * Time.deltaTime);
+                rb.AddForce(direction * speed, ForceMode.Force);
             }
-            else if (nearestEnemy == null)
+            else if (targetEnemy == null)
             {
                 transform.position += transform.forward * (speed * Time.deltaTime);
             }
