@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
             
         }
-        animator.SetBool("IsRunning", rb.velocity.magnitude >0);
+        animator.SetBool("IsRunning", inputVector.magnitude > 0);
 
         //find nearest S_Enemy or Enemy to look at it if it inside searchDistance
         float searchDistance = 18f;
