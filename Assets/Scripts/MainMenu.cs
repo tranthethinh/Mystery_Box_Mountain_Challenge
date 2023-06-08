@@ -11,7 +11,13 @@ public class MainMenu : MonoBehaviour
     }
     public void QuitGame()
     {
-        Application.Quit();
-        Debug.Log("Quit Game!");
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #elif UNITY_WEBGL
+            
+            Application.OpenURL("https://thinhtt.itch.io/mystery-box-mountain-challenge");
+        #else
+            Application.Quit();
+        #endif
     }
 }

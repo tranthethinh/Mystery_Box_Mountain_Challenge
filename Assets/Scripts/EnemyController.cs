@@ -29,6 +29,8 @@ public class EnemyController : MonoBehaviour
             {
                 direction.Normalize();
                 currentDirection = direction;
+                Quaternion lookRotation = Quaternion.LookRotation(currentDirection);
+                transform.rotation = lookRotation;
                 transform.position += currentDirection * moveSpeed * Time.deltaTime;
             }
             else
@@ -44,6 +46,14 @@ public class EnemyController : MonoBehaviour
 
                     // Reset the timer
                     timer = 0f;
+                }
+                if (randomDirection != Vector3.zero)
+                {
+                    // Calculate the rotation needed to face the random direction
+                    Quaternion lookRotation = Quaternion.LookRotation(randomDirection);
+
+                    // Apply the rotation to the enemy object
+                    transform.rotation = lookRotation;
                 }
 
                 // Smoothly transition between the current direction and the new random direction
